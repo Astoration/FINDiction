@@ -1,7 +1,9 @@
 package moe.koibito.findiction;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,8 +28,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         try{
-            if(mCamera==null)
-                Log.e("camera","null");
+            mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.startPreview();
         }catch (IOException e){
