@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuAdapter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -47,6 +48,9 @@ public class MainActivity extends Activity {
     private ImageView mStopButton;
     private RelativeLayout mMainLayout;
     private LinearLayout mCanvasContainer;
+    private ListView mNavilistView;
+    private NaviListAdapter mNaviMenuAdapter;
+    private NaviMenuItem[] MenuList = new NaviMenuItem[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +124,14 @@ public class MainActivity extends Activity {
             }
         });
         mCanvasContainer = (LinearLayout) findViewById(R.id.canvas_container);
+        mNavilistView = (ListView) findViewById(R.id.navi_listview);
+        MenuList[0]=new NaviMenuItem(getDrawable(R.drawable.ic_search),"내가 찾은 친구들");
+        MenuList[1]=new NaviMenuItem(getDrawable(R.drawable.ic_location),"친구를 찾은 장소");
+        MenuList[2]=new NaviMenuItem(getDrawable(R.drawable.ic_pen),"나만의 펜 바꾸기");
+        mNaviMenuAdapter = new NaviListAdapter(MenuList);
+        mNavilistView.setAdapter(mNaviMenuAdapter);
+        mNavilistView.deferNotifyDataSetChanged();
         getPermission();
-
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
