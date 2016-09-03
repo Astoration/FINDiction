@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.io.IOException;
 
 /**
@@ -25,6 +24,18 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
+    public void setCamera(Camera camera){
+        mCamera = camera;
+        mCamera.setDisplayOrientation(90);
+        mHolder=getHolder();
+        try {
+            mCamera.setPreviewDisplay(mHolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mCamera.startPreview();
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         try{
@@ -39,21 +50,14 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         if (mHolder.getSurface() == null){
-            // preview surface does not exist
             return;
         }
 
-        // stop preview before making changes
         try {
             mCamera.stopPreview();
         } catch (Exception e){
-            // ignore: tried to stop a non-existent preview
         }
 
-        // set preview size and make any resize, rotate or
-        // reformatting changes here
-
-        // start preview with new settings
         try {
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
