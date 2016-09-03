@@ -46,7 +46,6 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_flash_off" />
 
-
             <Space
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
@@ -59,7 +58,6 @@
                 android:layout_weight="1"
                 android:id="@+id/ic_change"
                 android:src="@drawable/ic_turn" />
-
 
             <Space
                 android:layout_width="1dp"
@@ -78,20 +76,38 @@
             android:layout_width="match_parent"
             android:background="#0fff"
             android:layout_marginTop="50dp"
-            android:layout_height="match_parent">
-
+            android:id="@+id/canvas_container"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <moe.koibito.findiction.CanvasView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="#ffff"/>
         </LinearLayout>
     </RelativeLayout>
-    <ListView
+    <RelativeLayout
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#111"
+        android:background="#fdfafa"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp">
-
-    </ListView>
+        android:dividerHeight="0dp"
+        android:weightSum="10"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="#e7e0e0"
+            android:weightSum="10"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_margin="10dp"
+                android:scaleType="fitCenter"
+                android:layout_width="120dp"
+                android:layout_height="120dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

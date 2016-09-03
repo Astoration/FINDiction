@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.Image;
@@ -18,10 +19,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -35,7 +38,7 @@ public class MainActivity extends Activity {
     private final int CAMERA_REQUEST_CODE = 1;
     private String[] mPlanetTitles;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    private RelativeLayout mNaviDrawer;
     private ImageView mNaviButton;
     private ImageView mFlashButton;
     private ImageView mChangeButton;
@@ -43,6 +46,7 @@ public class MainActivity extends Activity {
     private boolean isStop = false;
     private ImageView mStopButton;
     private RelativeLayout mMainLayout;
+    private LinearLayout mCanvasContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +55,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mNaviDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
         mMainLayout = (RelativeLayout) findViewById(R.id.main_content);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mPlanetTitles));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mNaviButton = (ImageView) findViewById(R.id.ic_navi);
         mNaviButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mDrawerLayout.isDrawerOpen(mDrawerList))
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                if(mDrawerLayout.isDrawerOpen(mNaviDrawer))
+                    mDrawerLayout.closeDrawer(mNaviDrawer);
                 else
-                    mDrawerLayout.openDrawer(mDrawerList);
+                    mDrawerLayout.openDrawer(mNaviDrawer);
             }
         });
         mFlashButton = (ImageView) findViewById(R.id.ic_flash);
@@ -118,6 +119,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        mCanvasContainer = (LinearLayout) findViewById(R.id.canvas_container);
         getPermission();
 
     }
@@ -190,12 +192,11 @@ public class MainActivity extends Activity {
     public static Camera getCameraInstance(){
         Camera c = null;
         try {
-            c = Camera.open(0); // attempt to get a Camera instance
+            c = Camera.open(0);
         }
         catch (Exception e){
-            // Camera is not available (in use or does not exist)
         }
-        return c; // returns null if camera is unavailable
+        return c;
     }
 
     @Override
@@ -208,14 +209,9 @@ public class MainActivity extends Activity {
                     mCamera = getCameraInstance();
                     mCameraView = new CameraView(this,mCamera);
                     camearaLayout.addView(mCameraView);
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
 
                 } else {
-                    Log.e("permission","permission desined");
                     getPermission();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
         }
